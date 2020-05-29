@@ -1,0 +1,21 @@
+1. Create PostgreSQL DB
+
+--- CREATE DATABASE collector_db;
+--- enable uuid-ossp CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+--- DB item ---
+CREATE TABLE item (
+id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
+path VARCHAR(256) NOT NULL,
+dsc VARCHAR(256) DEFAULT NULL
+);
+
+2. Create a REST Spring microservice to ADD / UPD / DEL items
+3. Create a gRPC Spring microservice to ADD / UPD / DEL
+4. Benchmark the two above services by adding / updating / deleting 1 million items
+5. Provide the code in a git repository with documentation in README.md (install, deploy, run) + benchmark results
+
+NB:
+
+- licence can be GPL
+- for accessing the database, use JOOQL for both subprojects

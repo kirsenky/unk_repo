@@ -1,4 +1,4 @@
-package unk.test0;
+package unk.test.t1;
 
 import unk.test0.generated.tables.records.ItemRecord;
 

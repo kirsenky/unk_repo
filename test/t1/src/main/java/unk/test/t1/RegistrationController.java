@@ -1,4 +1,4 @@
-package unk.test0;
+package unk.test.t1;
 
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;

@@ -1,4 +1,4 @@
-package unk.test0;
+package unk.test.t1;
 
 import org.postgresql.ds.PGSimpleDataSource;
 

@@ -29,10 +29,9 @@
             <artifactId>grpc-spring-boot-starter</artifactId>
             <version>3.3.0</version>
         </dependency>
-        <dependency>
-            <!-- Java 9+ compatibility -->
+        <!--dependency>
             <groupId>javax.annotation</groupId>
             <artifactId>javax.annotation-api</artifactId>
-        </dependency>
+        </dependency-->
     </dependencies>
 </project>

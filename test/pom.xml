@@ -15,7 +15,8 @@
     <packaging>pom</packaging>
     <modules>
         <module>t1</module>
-        <!--module>t2</module-->
+        <module>t2</module>
+        <!--module>t3</module-->
     </modules>
 
     <properties>

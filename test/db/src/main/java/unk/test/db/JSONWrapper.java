@@ -1,6 +1,6 @@
 package unk.test.db;
 
-import unk.test0.generated.tables.records.ItemRecord;
+import unk.test.db.generated.tables.records.ItemRecord;
 
 import java.util.UUID;
 

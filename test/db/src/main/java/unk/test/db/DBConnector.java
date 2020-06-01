@@ -6,10 +6,12 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class DBConnector extends PGSimpleDataSource {
+    private DBConfig config=DBConfig.getConfig();
+
     @Override
     public Connection getConnection() throws SQLException {
-        super.setDatabaseName(DBConfig.getDatabaseName());
-        return super.getConnection(DBConfig.getUsr(),DBConfig.getPword());
+        super.setDatabaseName(config.getDatabaseName());
+        return super.getConnection(config.getUsr(),config.getPword());
     }
 
     @Override

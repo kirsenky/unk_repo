@@ -20,7 +20,10 @@ public class JSONWrapper {
     }
 
     public String getId() {
-        return id;
+        if (isIdValid())
+            return id;
+        else
+            return null;
     }
 
     public void setId(String id) {
@@ -41,5 +44,13 @@ public class JSONWrapper {
 
     public void setDsc(String dsc) {
         this.dsc = dsc;
+    }
+
+    public boolean isIdValid(){
+        if( id!=null && id.length() == 36 ){
+            UUID uid=UUID.fromString(id);
+            return uid.toString().equalsIgnoreCase(id);
+        }
+        return false;
     }
 }

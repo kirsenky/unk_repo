@@ -17,9 +17,10 @@ import io.grpc.Channel;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.StatusRuntimeException;
-import unk.test.t2.shared.HelloReply;
-import unk.test.t2.shared.HelloRequest;
-import unk.test.t2.shared.MyServiceGrpc;
+import unk.test.t2.shared.QueryType;
+import unk.test.t2.shared.TestReply;
+import unk.test.t2.shared.TestRequest;
+import unk.test.t2.shared.TestServiceGrpc;
 
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -28,7 +29,7 @@ import java.util.logging.Logger;
 public class GrpcClient {
     private static final Logger logger = Logger.getLogger(GrpcClient.class.getName());
 
-    private MyServiceGrpc.MyServiceBlockingStub blockingStub;
+    private TestServiceGrpc.TestServiceBlockingStub blockingStub;
 
     /** Construct client for accessing HelloWorld server using the existing channel. */
     public GrpcClient(Channel channel) {
@@ -36,21 +37,21 @@ public class GrpcClient {
         // shut it down.
 
         // Passing Channels to code makes code easier to test and makes it easier to reuse Channels.
-        blockingStub = MyServiceGrpc.newBlockingStub(channel);
+        blockingStub = TestServiceGrpc.newBlockingStub(channel);
     }
 
     /** Say hello to server. */
     public void greet(String name) {
         logger.info("Will try to greet " + name + " ...");
-        HelloRequest request = HelloRequest.newBuilder().setName(name).build();
-        HelloReply response;
+        TestRequest request = TestRequest.newBuilder().setType(QueryType.GET).build();
+        TestReply response;
         try {
-            response = blockingStub.sayHello(request);
+            response = blockingStub.askTestServer(request);
         } catch (StatusRuntimeException e) {
             logger.log(Level.WARNING, "RPC failed: {0}", e.getStatus());
             return;
         }
-        logger.info("Greeting: " + response.getName());
+        logger.info("Greeting: " + response.getResult());
     }
 
     /**

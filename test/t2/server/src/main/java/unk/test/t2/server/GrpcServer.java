@@ -16,11 +16,15 @@ package unk.test.t2.server;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import io.grpc.stub.StreamObserver;
-import unk.test.t2.shared.HelloReply;
-import unk.test.t2.shared.HelloRequest;
-import unk.test.t2.shared.MyServiceGrpc;
+import unk.test.db.JSONWrapper;
+import unk.test.db.Processor;
+import unk.test.t2.shared.QueryType;
+import unk.test.t2.shared.TestReply;
+import unk.test.t2.shared.TestRequest;
+import unk.test.t2.shared.TestServiceGrpc;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
@@ -33,7 +37,7 @@ public class GrpcServer {
         /* The port on which the server should run */
         int port = 50051;
         server = ServerBuilder.forPort(port)
-                .addService(new GreeterImpl())
+                .addService(new TestServiceImpl())
                 .build()
                 .start();
         logger.info("Server started, listening on " + port);
@@ -76,11 +80,43 @@ public class GrpcServer {
         server.blockUntilShutdown();
     }
 
-    static class GreeterImpl extends MyServiceGrpc.MyServiceImplBase {
+    static class TestServiceImpl extends TestServiceGrpc.TestServiceImplBase {
+        private Processor db = new Processor();
+
+        private JSONWrapper decode(TestRequest req) {
+            JSONWrapper wrapper = new JSONWrapper();
+            wrapper.setId(req.getId());
+            wrapper.setPath(req.getPath());
+            wrapper.setDsc(req.getDsc());
+            return wrapper;
+        }
+
+        private String queryDB(int reqType, JSONWrapper wrapper) {
+            try {
+                switch (reqType) {
+                    case QueryType.GET_VALUE:
+                        return this.db.get(wrapper);
+                    case QueryType.PUT_VALUE:
+                        return this.db.upsert(wrapper);
+                    case QueryType.DELETEE_VALUE:
+                        return this.db.drop(wrapper);
+                    case QueryType.UNSPECIFIED_VALUE:
+                    default:
+                        return "TestServiceGrpc failed to process unknown query.";
+                }
+            } catch (SQLException e) {
+                return e.getMessage();
+            }
+        }
 
         @Override
-        public void sayHello(HelloRequest req, StreamObserver<HelloReply> responseObserver) {
-            HelloReply reply = HelloReply.newBuilder().setName("Hello " + req.getName()).build();
+        public void askTestServer(TestRequest req, StreamObserver<TestReply> responseObserver) {
+            String result = "";
+            JSONWrapper wrapper = decode(req);
+            int reqType = req.getType().getNumber();
+            result = queryDB(reqType, wrapper);
+            TestReply.Builder builder = TestReply.newBuilder();
+            TestReply reply = builder.setResult(result).build();
             responseObserver.onNext(reply);
             responseObserver.onCompleted();
         }

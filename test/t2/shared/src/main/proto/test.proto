@@ -4,19 +4,26 @@ package unk.test.t2.shared;
 
 option java_multiple_files = true;
 option java_package = "unk.test.t2.shared";
-option java_outer_classname = "HelloWorldProto";
+option java_outer_classname = "TestProto";
 
-// The greeting service definition.
-service MyService {
-    // Sends a greeting
-    rpc SayHello (HelloRequest) returns (HelloReply) {
+service TestService {
+    rpc askTestServer (TestRequest) returns (TestReply) {
     }
 }
 
-// The request message containing the user's name.
-message HelloRequest {
-    string name = 1;
+enum QueryType {
+    UNSPECIFIED = 0;
+    GET = 1;
+    PUT = 2;
+    DELETEE = 3;
 }
-message HelloReply {
-    string name = 1;
+// The request message containing the user's name.
+message TestRequest {
+    QueryType type = 1;
+    string id = 2;
+    string path = 3;
+    string dsc = 4;
+}
+message TestReply {
+    string result = 1;
 }

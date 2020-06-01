@@ -19,6 +19,11 @@
     </properties>
     <dependencies>
     <dependency>
+    <groupId>org.example</groupId>
+    <artifactId>test.db</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
        <groupId>org.example</groupId>
        <artifactId>test.t2.shared</artifactId>
        <version>1.0-SNAPSHOT</version>

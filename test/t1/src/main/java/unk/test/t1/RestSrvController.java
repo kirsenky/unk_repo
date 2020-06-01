@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import unk.test.db.*;
 import unk.test0.generated.tables.Item;
 import unk.test0.generated.tables.records.ItemRecord;
 
@@ -13,14 +14,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.UUID;
 
 import static org.springframework.util.MimeTypeUtils.*;
 
 
 @RestController
 @RequestMapping("t1")
-public class RegistrationController {
+public class RestSrvController {
 
     private boolean usernameAlreadyExists;
     private DataSource ds = new DBConnector();

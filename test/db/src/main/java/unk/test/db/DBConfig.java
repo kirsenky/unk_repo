@@ -1,4 +1,4 @@
-package unk.test.t1;
+package unk.test.db;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;

@@ -3,8 +3,8 @@
   <!-- Configure the database connection here -->
   <jdbc>
     <driver>org.postgresql.Driver</driver>
-    <url>jdbc:postgresql://localhost/unk</url>
-    <user>unk</user>
+    <url>jdbc:postgresql://localhost/collector_db</url>
+    <user>test</user>
     <password>assa</password>
   </jdbc>
   <generator>

@@ -15,8 +15,8 @@
     <packaging>pom</packaging>
     <modules>
         <module>db</module>
-        <module>t1</module>
-        <module>t2</module>
+        <module>rest</module>
+        <module>grpc</module>
         <!--module>t3</module-->
     </modules>
 

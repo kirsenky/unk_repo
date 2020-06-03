@@ -23,7 +23,7 @@ public class RestSrvController {
 
     @RequestMapping(method = RequestMethod.GET,
             value = "/item",
-            produces = TEXT_HTML_VALUE)
+            produces = APPLICATION_JSON_VALUE)
     public String query(@RequestBody(required = false) JSONWrapper wrapper) throws SQLException {
             return db.get(wrapper);
     }

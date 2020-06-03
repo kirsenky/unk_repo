@@ -18,7 +18,7 @@ public class Processor {
                     .fetch(item).formatHTML();
         } else {
             return DSL.using(ds, SQLDialect.POSTGRES)
-                    .fetch("select * from item where id='"+wrapper.getId()+"'").formatHTML();
+                    .fetch("select * from item where id='"+wrapper.getId()+"'").formatJSON();
         }
     }
 

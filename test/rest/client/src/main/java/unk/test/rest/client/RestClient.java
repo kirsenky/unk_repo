@@ -9,7 +9,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
-import unk.test.db.JSONWrapper;
 
 @SpringBootApplication
 public class RestClient {
@@ -26,11 +25,12 @@ public class RestClient {
 	}
 
 	@Bean
-	public CommandLineRunner run(RestTemplate restTemplate) throws Exception {
-		return args -> {
-			JSONWrapper item= restTemplate.getForObject(
-					"http://localhost:8080/t1/item", JSONWrapper.class);
-			log.info(item.toString());
+	public CommandLineRunner run(RestTemplate restTemplate) {
+		return new CommandLineRunner() {
+			@Override
+			public void run(String... args) throws Exception {
+				new TestRunner().execute(restTemplate);
+			}
 		};
 	}
 }

@@ -24,7 +24,6 @@ import unk.test.grpc.shared.TestRequest;
 import unk.test.grpc.shared.TestServiceGrpc;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
@@ -101,7 +100,7 @@ public class GrpcServer {
                     default:
                         return "TestServiceGrpc failed to process unknown query.";
                 }
-            } catch (SQLException e) {
+            } catch (Exception e) {
                 return e.getMessage();
             }
         }

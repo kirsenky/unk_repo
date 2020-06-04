@@ -74,7 +74,7 @@ Similar commands are used for REST testing. All required to do so is to replace 
 23:20:11.655 [main] INFO ... - Time spent for iteration 9 (100 records inserted/updated/deleted) is 49 Seconds                            
 23:20:11.655 [main] INFO ... - === Performance test for gRPC client/server finished ==                        
                                                                                                                                           
-# Used materials                                                                                                                          
+# Used materials and useful links                                                                                                                          
                                                                                                                                           
 https://www.postgresql.org/                                                                                                               
 https://github.com/jOOQ/jOOQ                                                                                                              

@@ -45,7 +45,9 @@ NB:
      java -jar ${path_to_grpc_client_target_folder}/test.grpc.client-1.0-SNAPSHOT.jar   
 Similar commands are used for REST testing. All required to do so is to replace 'grpc' in above examples with 'rest'.
 
-# Test evidence                                                                                                                           
+# Test evidence 
+Listings below obtained by local run all services (including Postgress)
+on a notebook under Windows 7 (Home edition) with 4G memory.
 # REST test run listing                                                                                                                   
 2020-06-04 16:17:23.872 ...  : === Starting performance test for REST client/server ==                                                    
 2020-06-04 16:18:16.938 ...  : Time spent for iteration 0 (100 records inserted/updated/deleted) is 53 Seconds                            

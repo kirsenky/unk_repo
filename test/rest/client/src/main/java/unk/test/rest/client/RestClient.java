@@ -26,11 +26,8 @@ public class RestClient {
 
 	@Bean
 	public CommandLineRunner run(RestTemplate restTemplate) {
-		return new CommandLineRunner() {
-			@Override
-			public void run(String... args) throws Exception {
-				new TestRunner().execute(restTemplate);
-			}
+		return args -> {
+			new TestRunner().execute(restTemplate);
 		};
 	}
 }

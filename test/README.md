@@ -61,7 +61,7 @@ Similar commands are used for REST testing. All required to do so is to replace 
 2020-06-04 16:25:34.895 ...  : === Performance test for REST client/server finished ==                                                    
                                                                                                                                           
 # gRPC test run listing                                                                                                                   
-23:11:50.942 [main] INFO ... - === Starting performance test for gRPC client/server ==
+23:11:50.942 [main] INFO ... - === Starting performance test for gRPC client/server ==                                          
 23:12:42.992 [main] INFO ... - Time spent for iteration 0 (100 records inserted/updated/deleted) is 52 Seconds                            
 23:13:32.458 [main] INFO ... - Time spent for iteration 1 (100 records inserted/updated/deleted) is 49 Seconds                            
 23:14:21.709 [main] INFO ... - Time spent for iteration 2 (100 records inserted/updated/deleted) is 49 Seconds                            

@@ -13,21 +13,24 @@
  */
 
 package unk.test.grpc.client;
+
 import io.grpc.Channel;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.StatusRuntimeException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import unk.test.db.JSONWrapper;
 import unk.test.grpc.shared.QueryType;
-import unk.test.grpc.shared.TestReply;
-import unk.test.grpc.shared.TestRequest;
+import unk.test.grpc.shared.Reply;
+import unk.test.grpc.shared.Request;
 import unk.test.grpc.shared.TestServiceGrpc;
 
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 public class GrpcClient {
-    private static final Logger logger = Logger.getLogger(GrpcClient.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(GrpcClient.class);
 
     private TestServiceGrpc.TestServiceBlockingStub blockingStub;
 
@@ -40,18 +43,25 @@ public class GrpcClient {
         blockingStub = TestServiceGrpc.newBlockingStub(channel);
     }
 
-    /** Say hello to server. */
-    public void greet(String name) {
-        logger.info("Will try to greet " + name + " ...");
-        TestRequest request = TestRequest.newBuilder().setType(QueryType.GET).build();
-        TestReply response;
+    public String askServer(QueryType method, JSONWrapper wrp) {
+        logger.debug("Sending to server ");
+        Request.Builder builder=Request.newBuilder();
+        builder.setType(method);
+        if (wrp.getId() != null)
+            builder.setId(wrp.getId());
+        if (wrp.getPath() != null)
+            builder.setPath(wrp.getPath());
+        if (wrp.getDsc() != null)
+            builder.setDsc(wrp.getDsc());
+        Request request = builder.build();
+        Reply response;
         try {
             response = blockingStub.askTestServer(request);
+            return response.getResult();
         } catch (StatusRuntimeException e) {
-            logger.log(Level.WARNING, "RPC failed: {0}", e.getStatus());
-            return;
+            logger.warn("RPC failed: {}", e);
+            return e.getMessage();
         }
-        logger.info("Greeting: " + response.getResult());
     }
 
     /**
@@ -59,23 +69,9 @@ public class GrpcClient {
      * greeting. The second argument is the target server.
      */
     public static void main(String[] args) throws Exception {
-        String user = "world";
         // Access a service running on the local machine on port 50051
         String target = "localhost:50051";
-        // Allow passing in the user and target strings as command line arguments
-        if (args.length > 0) {
-            if ("--help".equals(args[0])) {
-                System.err.println("Usage: [name [target]]");
-                System.err.println();
-                System.err.println("  name    The name you wish to be greeted by. Defaults to " + user);
-                System.err.println("  target  The server to connect to. Defaults to " + target);
-                System.exit(1);
-            }
-            user = args[0];
-        }
-        if (args.length > 1) {
-            target = args[1];
-        }
+
 
         // Create a communication channel to the server, known as a Channel. Channels are thread-safe
         // and reusable. It is common to create channels at the beginning of your application and reuse
@@ -87,9 +83,9 @@ public class GrpcClient {
                 .build();
         try {
             GrpcClient client = new GrpcClient(channel);
-            client.greet(user);
-            client.greet("Marta");
-            client.greet("Debora");
+            TestRunner runner = new TestRunner(client);
+            runner.runTests();
+
         } finally {
             // ManagedChannels use resources like threads and TCP connections. To prevent leaking these
             // resources the channel should be shut down when it will no longer be used. If it may be used

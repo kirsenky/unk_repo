@@ -72,8 +72,7 @@ public class Processor {
     }
 
     public String drop(JSONWrapper wrapper) {
-        ItemRecord record = wrapper.getRec();
-        if (record.getId() != null) {
+        if (wrapper.getId() != null) {
             DSL.using(ds, SQLDialect.POSTGRES)
                     .query("delete from item where id='" + wrapper.getId() + "'")
                     .execute();

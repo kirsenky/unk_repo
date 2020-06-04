@@ -19,8 +19,8 @@ import io.grpc.stub.StreamObserver;
 import unk.test.db.JSONWrapper;
 import unk.test.db.Processor;
 import unk.test.grpc.shared.QueryType;
-import unk.test.grpc.shared.TestReply;
-import unk.test.grpc.shared.TestRequest;
+import unk.test.grpc.shared.Reply;
+import unk.test.grpc.shared.Request;
 import unk.test.grpc.shared.TestServiceGrpc;
 
 import java.io.IOException;
@@ -79,7 +79,7 @@ public class GrpcServer {
     static class TestServiceImpl extends TestServiceGrpc.TestServiceImplBase {
         private Processor db = new Processor();
 
-        private JSONWrapper decode(TestRequest req) {
+        private JSONWrapper decode(Request req) {
             JSONWrapper wrapper = new JSONWrapper();
             wrapper.setId(req.getId());
             wrapper.setPath(req.getPath());
@@ -94,7 +94,7 @@ public class GrpcServer {
                         return this.db.get(wrapper);
                     case QueryType.PUT_VALUE:
                         return this.db.upsert(wrapper);
-                    case QueryType.DELETEE_VALUE:
+                    case QueryType.DEL_VALUE:
                         return this.db.drop(wrapper);
                     case QueryType.UNSPECIFIED_VALUE:
                     default:
@@ -106,13 +106,13 @@ public class GrpcServer {
         }
 
         @Override
-        public void askTestServer(TestRequest req, StreamObserver<TestReply> responseObserver) {
+        public void askTestServer(Request req, StreamObserver<Reply> responseObserver) {
             String result;
             JSONWrapper wrapper = decode(req);
             int reqType = req.getType().getNumber();
             result = queryDB(reqType, wrapper);
-            TestReply.Builder builder = TestReply.newBuilder();
-            TestReply reply = builder.setResult(result).build();
+            Reply.Builder builder = Reply.newBuilder();
+            Reply reply = builder.setResult(result).build();
             responseObserver.onNext(reply);
             responseObserver.onCompleted();
         }

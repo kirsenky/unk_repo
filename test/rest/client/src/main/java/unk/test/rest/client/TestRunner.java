@@ -19,7 +19,7 @@ public class TestRunner {
         HashMap<String, String> uriVars = new HashMap<>();
         uriVars.put("path", wrapObj.getPath());
         uriVars.put("dsc", wrapObj.getDsc());
-        log.info("===> Iteration started:{}", new Date());
+        log.debug("===> Iteration started:{}", new Date());
         restTemplate.put(itemUrl + "?path=" + wrapObj.getPath()+"&dsc="+wrapObj.getDsc(), null, uriVars);
         wrapObj = restTemplate.getForObject(itemUrl, JSONWrapper.class);
         if (wrapObj.isIdValid()) {
@@ -37,8 +37,8 @@ public class TestRunner {
             if ((delObj == null) || !delObj.isIdValid()) {
                 log.debug(wrapObj.getId() + "=> deleted");
             }
-            log.debug("===> Iteration finished:" + new Date());
         }
+        log.debug("===> Iteration finished:" + new Date());
     }
 
     void execute(RestTemplate restTemplate) {
@@ -50,8 +50,9 @@ public class TestRunner {
                 wrapObj = (restTemplate.getForObject(itemUrl, JSONWrapper.class, wrapObj));
             }
         } while ((wrapObj != null) && wrapObj.isIdValid());
-        int maxI=1000;
+        int maxI=100;
         int maxj=10;
+        log.info("=== Starting performance test for REST client/server ==");
         for (int j = 0; j < maxj; j++) {
             Date start=new Date();
             for (int i = 0; i < maxI; i++) {
@@ -59,7 +60,8 @@ public class TestRunner {
             }
             Date stop=new Date();
             long tDiff=stop.getTime()-start.getTime();
-            log.info("Time spent for iteration {} is {} mSec", j, tDiff );
+            log.info("Time spent for iteration {} (100 records inserted/updated/deleted) is {} Seconds", j, (stop.getTime()-start.getTime())/1000 );
         }
+        log.info("=== Performance test for REST client/server finished ==");
     }
 }

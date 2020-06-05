@@ -30,8 +30,8 @@ NB:
 1. Install Postgress (if not installed)                                                                                                   
    - run as postgress user commands:                                                                                                      
      ${deployment_folder}/test/db/scripts/create.bat  
-     !!! if you installing on unix you need to create simiar bash script
-     Then you will be asked to input password for users: 
+     !!! if you run on unix you need to create similar bash script(s)
+     After run script above you will be asked to input password for users: 
             postgres - superuser under which account we can create test user for our purposes and add UUID extension.
             test - regular user created by create.bat with password which you can see in create.bat. 
                    This user is used to build and run tests.

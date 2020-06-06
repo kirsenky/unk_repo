@@ -30,8 +30,7 @@ import java.util.concurrent.TimeUnit;
 
 
 public class GrpcClient {
-    private static final Logger logger = LoggerFactory.getLogger(GrpcClient.class);
-
+    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
     private TestServiceGrpc.TestServiceBlockingStub blockingStub;
 
     /** Construct client for accessing HelloWorld server using the existing channel. */
@@ -44,9 +43,11 @@ public class GrpcClient {
     }
 
     public String askServer(QueryType method, JSONWrapper wrp) {
-        logger.debug("Sending to server ");
+        LOGGER.debug("Sending to server ");
         Request.Builder builder=Request.newBuilder();
         builder.setType(method);
+        if (wrp==null)
+            wrp=new JSONWrapper();
         if (wrp.getId() != null)
             builder.setId(wrp.getId());
         if (wrp.getPath() != null)
@@ -59,7 +60,7 @@ public class GrpcClient {
             response = blockingStub.askTestServer(request);
             return response.getResult();
         } catch (StatusRuntimeException e) {
-            logger.warn("RPC failed: {}", e);
+            LOGGER.warn("RPC failed: {} ", e.getMessage());
             return e.getMessage();
         }
     }

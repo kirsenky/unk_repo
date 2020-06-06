@@ -8,7 +8,7 @@ import unk.test.grpc.shared.QueryType;
 import java.util.Date;
 
 public class TestRunner {
-    private static Logger log = LoggerFactory.getLogger(TestRunner.class.getName());
+    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
     private GrpcClient client;
 
     TestRunner(GrpcClient client) {
@@ -20,7 +20,7 @@ public class TestRunner {
         if ("".equalsIgnoreCase(input))
             res = null;
         else {
-            int idPos = 0;
+            int idPos;
             if (input.length() > 43) {
                 idPos = input.indexOf("\"id\":");
                 if (idPos > 0) {
@@ -38,40 +38,43 @@ public class TestRunner {
         wrp.setPath("grpc_path_"+iter);
         wrp.setPath("grpc_dsc_"+iter);
         result = client.askServer(QueryType.PUT, wrp);
-        log.debug("Put: {}",result);
+        LOGGER.debug("Put: {}",result);
         result = client.askServer(QueryType.GET, wrp);
-        log.debug("Inserted: {}",result);
+        LOGGER.debug("Inserted: {}",result);
         wrp=parseResult(result);
         wrp.setPath("grpc_path_"+iter+"_amended");
         result = client.askServer(QueryType.PUT, wrp);
-        log.debug("Amended: {}",result);
+        LOGGER.debug("Amended: {}",result);
         wrp.setId("");
         result = client.askServer(QueryType.GET, wrp);
         wrp=parseResult(result);
         String oldId=wrp.getId();
-        result = client.askServer(QueryType.DEL, wrp);
+        client.askServer(QueryType.DEL, wrp);
         result = client.askServer(QueryType.GET, wrp);
         wrp=parseResult(result);
-        if (wrp==null) log.debug("Deleted {}",oldId);
+        if (wrp==null) LOGGER.debug("Deleted {}",oldId);
     }
 
     public void runTests() {
         JSONWrapper wrp;
         do {
+            LOGGER.debug("Starting iteration");
             wrp = new JSONWrapper();
             String result = client.askServer(QueryType.GET, wrp);
             wrp=parseResult(result);
-            log.debug("qerying: {}", wrp.getId());
-            result = client.askServer(QueryType.DEL, wrp);
-            log.debug("cleaning: {} {}", wrp.getId(), result);
+            LOGGER.debug("qerying: {}", wrp);
+            if (wrp!=null) {
+                result = client.askServer(QueryType.DEL, wrp);
+                LOGGER.debug("cleaning: {} {}", wrp, result);
+            }
             result = client.askServer(QueryType.GET, wrp);
             wrp=parseResult(result);
-            log.debug("Server response: {}", result);
+            LOGGER.debug("Server response: {}", result);
         } while (wrp != null && wrp.getId() != null);
 
         int maxI=100;
         int maxj=10;
-        log.info("=== Starting performance test for gRPC client/server ==");
+        LOGGER.info("=== Starting performance test for gRPC client/server ==");
         for (int j = 0; j < maxj; j++) {
             Date start=new Date();
             for (int i = 0; i < maxI; i++) {
@@ -79,8 +82,8 @@ public class TestRunner {
             }
             Date stop=new Date();
             long tDiff=stop.getTime()-start.getTime();
-            log.info("Time spent for iteration {} (100 records inserted/updated/deleted) is {} Seconds", j, (stop.getTime()-start.getTime())/1000 );
+            LOGGER.info("Time spent for iteration {} (100 records inserted/updated/deleted) is {} Seconds", j, (stop.getTime()-start.getTime())/1000 );
         }
-        log.info("=== Performance test for gRPC client/server finished ==");
+        LOGGER.info("=== Performance test for gRPC client/server finished ==");
     }
 }

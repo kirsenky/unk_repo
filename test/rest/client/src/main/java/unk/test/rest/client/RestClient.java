@@ -1,8 +1,6 @@
 package unk.test.rest.client;
 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,8 +10,6 @@ import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
 public class RestClient {
-
-	private static final Logger log = LoggerFactory.getLogger(RestClient.class);
 
 	public static void main(String[] args) {
 		SpringApplication.run(RestClient.class, args);
@@ -28,7 +24,7 @@ public class RestClient {
 	public CommandLineRunner run(RestTemplate restTemplate) {
 		return new CommandLineRunner() {
 			@Override
-			public void run(String... args) throws Exception {
+			public void run(String... args) {
 				new TestRunner().execute(restTemplate);
 				Runtime.getRuntime().halt(0);
 			}

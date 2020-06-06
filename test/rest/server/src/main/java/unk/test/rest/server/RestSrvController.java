@@ -19,7 +19,8 @@ import static org.springframework.util.MimeTypeUtils.TEXT_HTML_VALUE;
 @RestController
 @RequestMapping("t1")
 public class RestSrvController {
-    private static final Logger logger = LoggerFactory.getLogger(RestSrvController.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+
     private Processor db = new Processor();
 
     @RequestMapping(method = RequestMethod.GET,
@@ -33,7 +34,7 @@ public class RestSrvController {
             produces = APPLICATION_JSON_VALUE)
     public String query(@RequestBody(required = false) JSONWrapper wrapper) {
         String res = db.get(wrapper);
-        logger.debug("Returning: {}",res);
+        LOGGER.debug("Returning: {}",res);
         return res;
     }
 
@@ -50,7 +51,7 @@ public class RestSrvController {
         wrapper.setDsc(dsc);
         wrapper.setPath(path);
         String res = db.upsert(wrapper);
-        logger.debug("Returning: {}", res);
+        LOGGER.debug("Returning: {}", res);
         return res;
     }
 
@@ -62,7 +63,7 @@ public class RestSrvController {
         if (wrapper==null) wrapper=new JSONWrapper();
         if(id!=null) wrapper.setId(id);
         String res = db.drop(wrapper);
-        logger.debug("Returning: {}", res);
+        LOGGER.debug("Returning: {}", res);
         return res;
     }
 

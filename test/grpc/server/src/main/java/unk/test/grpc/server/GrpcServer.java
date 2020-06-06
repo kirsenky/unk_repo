@@ -16,6 +16,8 @@ package unk.test.grpc.server;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import io.grpc.stub.StreamObserver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import unk.test.db.JSONWrapper;
 import unk.test.db.Processor;
 import unk.test.grpc.shared.QueryType;
@@ -25,21 +27,27 @@ import unk.test.grpc.shared.TestServiceGrpc;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
+
 
 public class GrpcServer {
-    private static final Logger logger = Logger.getLogger(GrpcServer.class.getName());
-
+    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
     private Server server;
 
     private void start() throws IOException {
+        /*
+        Handler[] handlers =
+                java.util.logging.Logger.getLogger( "" ).getHandlers();
+        for (Handler handler : handlers) {
+            handler.setLevel(Level.FINEST);
+        }*/
+
         /* The port on which the server should run */
         int port = 50051;
         server = ServerBuilder.forPort(port)
                 .addService(new TestServiceImpl())
                 .build()
                 .start();
-        logger.info("Server started, listening on " + port);
+        LOGGER.info("Server started, listening on " + port);
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             // Use stderr here since the logger may have been reset by its JVM shutdown hook.
             System.err.println("*** shutting down gRPC server since JVM is shutting down");

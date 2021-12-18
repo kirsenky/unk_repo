@@ -14,7 +14,7 @@
     </modules>
 
     <properties>
-        <apache.slf4j.version>2.13.2</apache.slf4j.version>
+        <apache.slf4j.version>2.17.0</apache.slf4j.version>
         <slf4j.version>1.7.30</slf4j.version>
         <springboot.version>2.3.0.RELEASE</springboot.version>
         <maven.compiler.source>1.8</maven.compiler.source>
